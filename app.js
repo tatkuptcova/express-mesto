@@ -1,13 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const { PORT = 3000 } = process.env;
+const { port = 3000 } = process.env;
 const app = express();
 
-// Подлключение к БД mestodb
 mongoose.connect('mongodb://localhost:27017/mestodb')
 
-app.listen(PORT, () => {
-
-    console.log(`Сервер запущен на порту ${PORT}`)
+app.listen(port, () => {
+  console.log(`Сервер запущен на порту ${port}`)
 })

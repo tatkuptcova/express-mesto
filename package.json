@@ -20,12 +20,13 @@
   },
   "homepage": "https://github.com/tatkuptcova/express-mesto#readme",
   "devDependencies": {
-    "eslint": "^7.32.0",
     "nodemon": "^2.0.12"
   },
   "dependencies": {
+    "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.24.2",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^6.0.5"
   }
 }
