@@ -24,9 +24,9 @@ module.exports.deleteCard = (req, res) => {
   Card.findOneAndDelete({_id: req.params.cardId})
     .then((card) => {
         if(card !== null){
-          res.status(204).send({data: card})
+          res.status(204).send({data: card});
         } else {
-          res.status(404).send({ message: "Данной карточки не существует"})
+          res.status(404).send({ message: "Данной карточки не существует"});
         }
       })
       .catch((err) => {

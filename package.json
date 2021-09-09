@@ -20,8 +20,8 @@
   },
   "homepage": "https://github.com/tatkuptcova/express-mesto#readme",
   "devDependencies": {
-    "nodemon": "^2.0.12",
-    "eslint": "^7.32.0"
+    "eslint": "^7.32.0",
+    "nodemon": "^2.0.12"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

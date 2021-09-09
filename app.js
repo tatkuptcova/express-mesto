@@ -10,14 +10,12 @@ const app = express();
 app.use(bodyParser.json()); // для соборки JSON-формата
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://localhost:27017/mestodb')
-
+mongoose.connect('mongodb://localhost:27017/mestodb');
 
 app.use((req, res, next) => {
   req.user = {
     _id: '613a5b0c03d78bb4d1490081' // вставьте сюда _id созданного в предыдущем пункте пользователя
   };
-
   next();
 });
 
@@ -28,5 +26,5 @@ app.use((req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Сервер запущен на порту ${port}`)
+  console.log(`Сервер запущен на порту ${port}`);
 })
