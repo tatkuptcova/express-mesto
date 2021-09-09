@@ -7,7 +7,7 @@ const cardsRouter = require('./routes/cards');
 const { port = 3000 } = process.env;
 const app = express();
 
-app.use(bodyParser.json()); // для собирания JSON-формата
+app.use(bodyParser.json()); // для соборки JSON-формата
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect('mongodb://localhost:27017/mestodb')
