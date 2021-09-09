@@ -13,47 +13,59 @@ module.exports.postCard = (req, res) => {
   Card.create({name, link, owner})
     .then(card => res.status(201).send({data: card}))
     .catch((err) => {
-      if(err.name || err.link || err.owner === "ValidationError"){
-        res.status(400).send({ message: "Произошла ошибка валидации"})
+      if (err.name === 'ValidationError') {
+        return res.status(400).send({ message: err.message });
       }
-      res.status(500).send(`Произошла ошибка: ${err.name} ${err.message}`)
+      return res.status(500).send({message: err.message});
     });
 };
 
 module.exports.deleteCard = (req, res) => {
-  Card.findOneAndDelete(req.params.cardId)
+  Card.findOneAndDelete({_id: req.params.cardId})
     .then((card) => {
-      if(card !== null){
-        res.status(200).send({data: card})
-      } else { res.status(404).send({ message: "Данной карточки не существует"})}
+        if(card !== null){
+          res.status(204).send({data: card})
+        } else {
+          res.status(404).send({ message: "Данной карточки не существует"})
+        }
       })
-    .catch(err => res.status(500).send({err: err.message}))
+      .catch((err) => {
+        if (err.name === 'CastError') {
+          return res.status(400).send({ message: 'id карточки не валидный' });
+        }
+        return res.status(500).send({message: err.message});
+      });
 };
 
 module.exports.likeCard = (req, res) => {
   Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id}}, { new: true })
     .then((card) => {
-      if(card !== null){
-        res.status(200).send({data: card})
-      }})
-    .catch((err) => {
-      if(err.name === "CastError"){
-        res.status(404).send({ message: "Данной карточки не существует"})
-      } else
-      {res.status(500).send(`Произошла ошибка: ${err.name} ${err.message}`)}
+      if (card === null) {
+        return res.status(404).send({ message: 'Карточка с указанным id не найдена' });
+      }
+      return res.send({ data: card });
     })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return res.status(400).send({ message: 'Переданы некорректные данные' });
+      }
+      next(err);
+    });
 };
 
 module.exports.dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(
   req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
     .then((card) => {
-      if(card !== null){
-        res.status(200).send({data: card})
-      }})
+      if (card === null) {
+        return res.status(404).send({ message: 'Карточка с указанным id не найдена' });
+      }
+      return res.send({ data: card });
+    })
     .catch((err) => {
-    if(err.name === "CastError"){
-      res.status(404).send({ message: "Данной карточки не существует"})
-    } else
-    {res.status(500).send(`Произошла ошибка: ${err.name} ${err.message}`)}
-})}
+      if (err.name === 'CastError') {
+        return res.status(400).send({ message: 'Переданы некорректные данные.' });
+      }
+      next(err);
+    });
+}

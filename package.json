@@ -2,10 +2,10 @@
   "name": "express-mesto",
   "version": "1.0.0",
   "description": "*Спринт 13:*",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "lint": "npx eslint",
     "start": "node app.js",
+    "lint": "npx eslint",
     "dev": "nodemon app.js"
   },
   "repository": {
@@ -20,11 +20,11 @@
   },
   "homepage": "https://github.com/tatkuptcova/express-mesto#readme",
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.12",
+    "eslint": "^7.32.0"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
-    "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.24.2",
     "express": "^4.17.1",
