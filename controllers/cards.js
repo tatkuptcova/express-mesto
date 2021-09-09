@@ -29,3 +29,31 @@ module.exports.deleteCard = (req, res) => {
       })
     .catch(err => res.status(500).send({err: err.message}))
 };
+
+module.exports.likeCard = (req, res) => {
+  Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id}}, { new: true })
+    .then((card) => {
+      if(card !== null){
+        res.status(200).send({data: card})
+      }})
+    .catch((err) => {
+      if(err.name === "CastError"){
+        res.status(404).send({ message: "Данной карточки не существует"})
+      } else
+      {res.status(500).send(`Произошла ошибка: ${err.name} ${err.message}`)}
+    })
+};
+
+module.exports.dislikeCard = (req, res) => {
+  Card.findByIdAndUpdate(
+  req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
+    .then((card) => {
+      if(card !== null){
+        res.status(200).send({data: card})
+      }})
+    .catch((err) => {
+    if(err.name === "CastError"){
+      res.status(404).send({ message: "Данной карточки не существует"})
+    } else
+    {res.status(500).send(`Произошла ошибка: ${err.name} ${err.message}`)}
+})}
