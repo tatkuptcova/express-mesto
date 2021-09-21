@@ -3,23 +3,20 @@ const bcrypt = require('bcryptjs');
 const validator = require('validator');
 
 const userSchema = new mongoose.Schema({
-
   name: {
     type: String,
+    required: true,
     minlength: 2,
     maxlength: 30,
-    required: true,
-    default: 'Жак-Ив Кусто'
+    default: 'Жак-Ив Кусто',
   },
-
   about: {
     type: String,
+    required: true,
     minlength: 2,
     maxlength: 30,
-    required: true,
-    default: 'Исследователь'
+    default: 'Исследователь',
   },
-
   avatar: {
     type: String,
     required: true,
