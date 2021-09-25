@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 
-const { port = 3000 } = process.env;
+const { port = 3002 } = process.env;
 const app = express();
 
 app.use(bodyParser.json()); // для соборки JSON-формата
@@ -14,7 +14,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb');
 
 app.use((req, res, next) => {
   req.user = {
-    _id: '613a5b0c03d78bb4d1490081' // вставьте сюда _id созданного в предыдущем пункте пользователя
+    _id: '614e07ad94310d92362da699' // вставьте сюда _id созданного в предыдущем пункте пользователя
   };
   next();
 });

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const validator = require('validator');
 
 const userSchema = new mongoose.Schema({
@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 2,
-    maxlength: 30,
+    maxlength: 50,
     default: 'Исследователь',
   },
   avatar: {
@@ -28,21 +28,18 @@ const userSchema = new mongoose.Schema({
       message: 'Ссылка в некорректном формате',
     },
   },
-
   email: {
     type: String,
     required: true,
     unique: true,
     validate: {
-      validator: validator.isEmail,
+      validator: (value) => isEmail(value),
       message: 'Пожалуйста, введите правильный email',
     },
   },
-
   password: {
     type: String,
     required: true,
-    minlength: 8,
   },
 },
 {
