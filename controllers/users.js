@@ -1,4 +1,33 @@
+const bcrypt = require('bcrypt');
 const User = require('../models/user');
+
+module.exports.login = (req, res) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email })
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(new Error('Неправильные почта или пароль'));
+      }
+
+      return bcrypt.compare(password, user.password);
+    })
+    .then((matched) => {
+      if (!matched) {
+        // хеши не совпали — отклоняем промис
+        return Promise.reject(new Error('Неправильные почта или пароль'));
+      }
+
+      // аутентификация успешна
+      res.send({ message: 'Всё верно!' });
+    })
+    .catch((err) => {
+      res
+        .status(401)
+        .send({ message: err.message });
+    });
+};
+
 
 module.exports.getUsers = (req, res) => {
   User.find({})
@@ -24,7 +53,7 @@ module.exports.getUserById = (req, res) => {
 
 module.exports.createUser = (req, res) => {
   const {name, about, avatar, email, password} = req.body;
-  console.log(req)
+  console.log
 
   User.create({name, about, avatar, email, password})
     .then((user) => res.status(201).send({ data: user }))
@@ -54,7 +83,7 @@ module.exports.updateUser = (req, res) =>{
     });
 }
 
-module.exports.updateAvatar = (req, res) => {
+module.exports.updateAvatar = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, {avatar: req.body.avatar},
     { new: true, runValidators: true})
     .then((user) => {
