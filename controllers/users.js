@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
+// controllers/users.js
+
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
@@ -27,7 +29,6 @@ module.exports.login = (req, res) => {
         .send({ message: err.message });
     });
 };
-
 
 module.exports.getUsers = (req, res) => {
   User.find({})
