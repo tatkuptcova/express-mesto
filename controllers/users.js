@@ -76,6 +76,15 @@ module.exports.createUser = (req, res) => {
     });
 };
 
+module.exports.getCurrentUser = (req, res, next) => {
+  const userId = req.user._id;
+
+  User.findById(userId)
+    .then((user) => res.status(200).send(user))
+    .catch(next);
+};
+
+
 module.exports.updateUser = (req, res) =>{
   User.findByIdAndUpdate(req.user._id, {name: req.body.name, about: req.body.about},
     { new: true, runValidators: true})
