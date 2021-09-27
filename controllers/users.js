@@ -1,32 +1,40 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-// controllers/users.js
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
-  User.findOne({ email })
+  console.log(req.body);
+  User.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
         return Promise.reject(new Error('Неправильные почта или пароль'));
       }
 
-      return bcrypt.compare(password, user.password);
-    })
-    .then((matched) => {
-      if (!matched) {
-        // хеши не совпали — отклоняем промис
-        return Promise.reject(new Error('Неправильные почта или пароль'));
-      }
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            // хеши не совпали — отклоняем промис
+            return Promise.reject(new Error('Неправильные почта или пароль'));
+          }
 
-      // аутентификация успешна
-      res.send({ message: 'Всё верно!' });
-    })
-    .catch((err) => {
-      res
-        .status(401)
-        .send({ message: err.message });
+          const token = jwt.sign(
+            { _id: user.id },
+            'secret',
+            { expiresIn: '7d' },
+          );
+
+          // аутентификация успешна
+          return res.status(200).send({ token });
+        })
+        .catch((err) => {
+          res
+            .status(401)
+            .send({ message: err.message });
+        });
+      // Захешируем его и сравним с хешем в базе. bcrypt.compare - асинхронный.
     });
 };
 
@@ -54,9 +62,11 @@ module.exports.getUserById = (req, res) => {
 
 module.exports.createUser = (req, res) => {
   const {name, about, avatar, email, password} = req.body;
-  console.log
 
-  User.create({name, about, avatar, email, password})
+  bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      name, about, avatar, email, password: hash,
+    }))
     .then((user) => res.status(201).send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
