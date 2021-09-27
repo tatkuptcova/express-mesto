@@ -12,9 +12,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect('mongodb://localhost:27017/mestodb');
 
+app.post('/signin', login);
+app.post('/signup', createUser);
+
 app.use((req, res, next) => {
   req.user = {
-    _id: '614e07ad94310d92362da699' 
+    _id: '614e07ad94310d92362da699'
   };
   next();
 });
