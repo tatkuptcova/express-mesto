@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -7,8 +8,7 @@ const UnauthorizedError = require('../errors/unauthorizedErr'); // 401
 const NotFoundError = require('../errors/notFoundError'); // 404
 const ConflictError = require('../errors/conflictErr'); // 409
 
-const { JWT_SECRET = 'secret-key' } = process.env
-
+const { JWT_SECRET = 'secret-key' } = process.env;
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
@@ -31,30 +31,34 @@ module.exports.login = (req, res, next) => {
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
-    .then(users => res.send({data: users}))
+    .then((users) => res.send({ data: users }))
     .catch(next);
 };
 
 module.exports.getUserById = (req, res, next) => {
   User.findById(req.params.userId)
+  // eslint-disable-next-line indent
   .then((user) => {
+    // eslint-disable-next-line indent
     if (user === null) {
+      // eslint-disable-next-line indent
       throw new NotFoundError('Нет пользователя с таким id');
-    } else {
-      res.send({ data: user });
-    }
-  })
-  .catch((err) => {
-    if (err.name === 'CastError') {
-      throw new BadRequestError('Переданы некорректные данные.');
-    }
-    next(err);
-  })
-  .catch(next);
-}
+      } else {
+        res.send({ data: user });
+      }
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        throw new BadRequestError('Переданы некорректные данные.');
+      }
+      next(err);
+    })
+    .catch(next);
+};
 
 module.exports.createUser = (req, res, next) => {
-  const {name, about, avatar, email, password} = req.body;
+  // eslint-disable-next-line object-curly-newline
+  const { name, about, avatar, email, password } = req.body;
 
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
@@ -96,18 +100,23 @@ module.exports.getCurrentUser = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.updateUser = (req, res, next) =>{
-  User.findByIdAndUpdate(req.user._id, {name: req.body.name, about: req.body.about},
-    { new: true, runValidators: true})
+module.exports.updateUser = (req, res, next) => {
+  User.findByIdAndUpdate(req.user._id, { name: req.body.name, about: req.body.about },
+    { new: true, runValidators: true })
     .then((user) => {
-      if(!user){
+      // eslint-disable-next-line keyword-spacing
+      if(!user) {
         throw new NotFoundError('Пользователь с указанным _id не найден');
       }
       return res.send({ data: user });
+      // eslint-disable-next-line indent
       })
     .catch((err) => {
-      if(err.name === "ValidationError" || err.name === "CastError"){
-        return res.status(400).send({ message: "Произошла ошибка валидации"});
+      // eslint-disable-next-line keyword-spacing
+      if(err.name === 'ValidationError' || err.name === 'CastError') {
+        // eslint-disable-next-line object-curly-spacing
+        return res.status(400).send({ message: 'Произошла ошибка валидации'});
+      // eslint-disable-next-line no-else-return
       } else {
         res.status(500).send(`Произошла ошибка: ${err.name} ${err.message}`);
       }
@@ -119,16 +128,17 @@ module.exports.updateUser = (req, res, next) =>{
       next(err);
     })
     .catch(next);
-}
+};
 
 module.exports.updateAvatar = (req, res, next) => {
-  User.findByIdAndUpdate(req.user._id, {avatar: req.body.avatar},
-    { new: true, runValidators: true})
+  User.findByIdAndUpdate(req.user._id, { avatar: req.body.avatar },
+    { new: true, runValidators: true })
     .then((user) => {
-      if(!user){
+      // eslint-disable-next-line keyword-spacing
+      if(!user) {
         throw new NotFoundError('Пользователь с указанным _id не найден.');
       }
-      return res.send({ data: user })
+      return res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -137,4 +147,4 @@ module.exports.updateAvatar = (req, res, next) => {
       next(err);
     })
     .catch(next);
-}
+};

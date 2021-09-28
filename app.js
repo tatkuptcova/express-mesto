@@ -1,14 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const helmet = require("helmet");
+const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const auth = require('./middlewares/auth');
-const { login,createUser } = require('./controllers/users');
+const { login, createUser } = require('./controllers/users');
 const error = require('./middlewares/error');
 
 const NotFoundError = require('./errors/notFoundError'); // 404
@@ -73,5 +73,6 @@ app.use(errors());
 app.use(error);
 
 app.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`Сервер запущен на порту ${port}`);
-})
+});

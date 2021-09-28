@@ -8,6 +8,7 @@ module.exports = (req, res, next) => {
   const token = req.cookies.jwt;
 
   if (!token) {
+    // eslint-disable-next-line no-undef
     throw new Unauthorized('Ошибка авторизации');
   }
 
@@ -21,5 +22,5 @@ module.exports = (req, res, next) => {
 
   req.user = payload; // записываем пейлоуд в объект запроса
 
-  return next(); 
+  return next();
 };

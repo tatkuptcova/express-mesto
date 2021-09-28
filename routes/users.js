@@ -1,10 +1,11 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
-const { getUserById, getUsers, getCurrentUser, updateUser, updateAvatar} = require('../controllers/users');
+// eslint-disable-next-line object-curly-newline
+const { getUserById, getUsers, getCurrentUser, updateUser, updateAvatar } = require('../controllers/users');
 
 router.get('/', getUsers);
 
-router.get('/:userId',  celebrate({
+router.get('/:userId', celebrate({
   params: Joi.object().keys({
     userId: Joi.string().required().hex().length(24),
   }),
