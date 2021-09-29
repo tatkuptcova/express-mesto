@@ -51,13 +51,6 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
-// app.use((req, res, next) => {
-//   req.user = {
-//     _id: '6154bdc3b5d275c414214d6c',
-//   };
-//   next();
-// });
-
 // авторизация
 app.use(auth);
 

@@ -1,4 +1,3 @@
-/* eslint-disable function-paren-newline */
 const Card = require('../models/card');
 
 const BadRequestError = require('../errors/badRequest'); // 400
