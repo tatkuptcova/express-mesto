@@ -1,5 +1,4 @@
 /* eslint-disable function-paren-newline */
-/* eslint-disable no-undef */
 const Card = require('../models/card');
 
 const BadRequestError = require('../errors/badRequest'); // 400
@@ -27,11 +26,10 @@ module.exports.postCard = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.deleteCard = (req, res) => {
-  Card.findById({ _id: req.params.cardId })
+module.exports.deleteCard = (req, res, next) => {
+  Card.findById(req.params.cardId)
     .then((card) => {
-      // eslint-disable-next-line keyword-spacing
-      if(card === null) {
+      if (card === null) {
         throw new NotFoundError('Карточка с указанным _id не найдена.');
       }
       if (card.owner.toString() === req.user._id) {
@@ -44,7 +42,6 @@ module.exports.deleteCard = (req, res) => {
       if (err.name === 'CastError') {
         throw new BadRequestError('Переданы некорректные данные.');
       }
-      // eslint-disable-next-line no-undef
       next(err);
     })
     .catch(next);

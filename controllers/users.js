@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -37,12 +36,9 @@ module.exports.getUsers = (req, res, next) => {
 
 module.exports.getUserById = (req, res, next) => {
   User.findById(req.params.userId)
-  // eslint-disable-next-line indent
-  .then((user) => {
-    // eslint-disable-next-line indent
-    if (user === null) {
-      // eslint-disable-next-line indent
-      throw new NotFoundError('Нет пользователя с таким id');
+    .then((user) => {
+      if (user === null) {
+        throw new NotFoundError('Нет пользователя с таким id');
       } else {
         res.send({ data: user });
       }
@@ -57,8 +53,9 @@ module.exports.getUserById = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
-  // eslint-disable-next-line object-curly-newline
-  const { name, about, avatar, email, password } = req.body;
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
 
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
@@ -104,22 +101,20 @@ module.exports.updateUser = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { name: req.body.name, about: req.body.about },
     { new: true, runValidators: true })
     .then((user) => {
-      // eslint-disable-next-line keyword-spacing
-      if(!user) {
+      if (!user) {
         throw new NotFoundError('Пользователь с указанным _id не найден');
       }
       return res.send({ data: user });
-      // eslint-disable-next-line indent
-      })
+    })
     .catch((err) => {
-      // eslint-disable-next-line keyword-spacing
-      if(err.name === 'ValidationError' || err.name === 'CastError') {
-        // eslint-disable-next-line object-curly-spacing
-        return res.status(400).send({ message: 'Произошла ошибка валидации'});
-      // eslint-disable-next-line no-else-return
-      } else {
-        res.status(500).send(`Произошла ошибка: ${err.name} ${err.message}`);
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
+        return res.status(400).send({
+          message: 'Произошла ошибка валидации',
+        });
       }
+      return res.status(500).send({
+        message: `Произошла ошибка: ${err.name} ${err.message}`,
+      });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -134,8 +129,7 @@ module.exports.updateAvatar = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { avatar: req.body.avatar },
     { new: true, runValidators: true })
     .then((user) => {
-      // eslint-disable-next-line keyword-spacing
-      if(!user) {
+      if (!user) {
         throw new NotFoundError('Пользователь с указанным _id не найден.');
       }
       return res.send({ data: user });

@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
-// eslint-disable-next-line object-curly-newline
-const { getUserById, getUsers, getCurrentUser, updateUser, updateAvatar } = require('../controllers/users');
+const {
+  getUserById, getUsers, getCurrentUser, updateUser, updateAvatar,
+} = require('../controllers/users');
 
 router.get('/', getUsers);
 

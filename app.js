@@ -27,7 +27,6 @@ mongoose.connect(
   },
   (err) => {
     if (err) throw err;
-    // console.log('connected to MongoDB');
   },
 );
 
@@ -54,7 +53,7 @@ app.post('/signup', celebrate({
 
 // app.use((req, res, next) => {
 //   req.user = {
-//     _id: '615210300980c832d3ed2e4c'
+//     _id: '6154bdc3b5d275c414214d6c',
 //   };
 //   next();
 // });
