@@ -66,7 +66,10 @@ module.exports.likeCard = (req, res, next) => {
 
 module.exports.dislikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
-    req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
+    req.params.cardId,
+    { $pull: { likes: req.user._id } },
+    { new: true },
+  )
     .then((card) => {
       if (card === null) {
         throw new NotFoundError('Карточка с указанным _id не найдена.');
